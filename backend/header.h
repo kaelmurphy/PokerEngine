@@ -66,3 +66,21 @@ public:
     const std::vector<Player>& getPlayers() const;
     const std::vector<Card>& getCommunity() const;
 };
+
+class Game {
+private:
+    Table table;
+
+public:
+    void setup();
+    void startGame();
+    void playHand();
+    void bettingRound(const std::string& stage);
+
+    void dealFlop();
+    void dealTurn();
+    void dealRiver();
+
+    const std::vector<Player>& getPlayers() const;
+    const std::vector<Card>& getCommunity() const;
+};

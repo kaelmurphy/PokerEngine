@@ -1,41 +1,58 @@
-#include <iostream>
 #include "header.h"
-
-void printPlayerHands(const std::vector<Player>& players) {
-    for (const auto& p : players) {
-        std::cout << p.getName() << " (Seat " << p.getSeat() << "): ";
-        for (const Card& c : p.getHand()) {
-            std::cout << c.toString() << " ";
-        }
-        std::cout << '\n';
-    }
-}
-
-void printCommunityCards(const std::vector<Card>& board) {
-    std::cout << "Community Cards: ";
-    for (const Card& c : board) {
-        std::cout << c.toString() << " ";
-    }
-    std::cout << '\n';
-}
+#include <iostream>
 
 int main() {
-    Table table;
+    Game game;
 
-    table.addPlayer("Alice", 1000, 0);
-    table.addPlayer("Bob", 1000, 1);
-    table.addPlayer("Charlie", 1000, 2);
+    // Start game and initialize players
+    game.startGame();
 
-    table.startHand();
-    table.dealFlop();
-    table.dealTurn();
-    table.dealRiver();
+    // Display players and their hands
+    const std::vector<Player>& players = game.getPlayers();
+    std::cout << "\n== Players and Hands ==\n";
+    for (const Player& player : players) {
+        std::cout << player.getName() << ": ";
+        for (const Card& card : player.getHand()) {
+            std::cout << card.toString() << " ";
+        }
+        std::cout << "\n";
+    }
 
-    std::cout << "\n== Player Hands ==\n";
-    printPlayerHands(table.getPlayers());
+    // Pre-flop betting round
+    game.bettingRound("pre-flop");
 
-    std::cout << "\n== Table Board ==\n";
-    printCommunityCards(table.getCommunity());
+    // Deal and display flop
+    game.dealFlop();
+    std::cout << "\n== Flop ==\n";
+    for (const Card& card : game.getCommunity()) {
+        std::cout << card.toString() << " ";
+    }
+    std::cout << "\n";
+
+    // Post-flop betting round
+    game.bettingRound("post-flop");
+
+    // Deal and display turn
+    game.dealTurn();
+    std::cout << "\n== Turn ==\n";
+    for (const Card& card : game.getCommunity()) {
+        std::cout << card.toString() << " ";
+    }
+    std::cout << "\n";
+
+    // Turn betting round
+    game.bettingRound("turn");
+
+    // Deal and display river
+    game.dealRiver();
+    std::cout << "\n== River ==\n";
+    for (const Card& card : game.getCommunity()) {
+        std::cout << card.toString() << " ";
+    }
+    std::cout << "\n";
+
+    // Final betting round
+    game.bettingRound("river");
 
     return 0;
 }
